@@ -1,6 +1,7 @@
 "use strict";
 
 const path = require("path");
+const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
@@ -12,7 +13,7 @@ module.exports = {
     path: path.join(__dirname, "dist"),
     filename: "[name].js",
   },
-  mode: "production",
+  mode: "development",
   module: {
     rules: [
       {
@@ -32,7 +33,28 @@ module.exports = {
           "less-loader",
         ],
       },
+      {
+        test: /.(png|svg|jpg|gif|jpeg)$/,
+        use: [
+          {
+            loader: "url-loader",
+            options: {
+              limit: 10240,
+            },
+          },
+        ],
+      },
+      {
+        test: /.(woff|woff2|eot|ttf|otf)$/,
+        use: ["file-loader"],
+      },
     ],
   },
-  //   plugins: [new HtmlWebpackPlugin()],
+  plugins: [new webpack.HotModuleReplacementPlugin()],
+  devServer: {
+    static: {
+      directory: path.join(__dirname, "dist"),
+    },
+    hot: true,
+  },
 };

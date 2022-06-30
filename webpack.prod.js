@@ -5,7 +5,7 @@ const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 module.exports = {
   entry: {
     index: "./src/index.js",
@@ -28,11 +28,7 @@ module.exports = {
       },
       {
         test: /\.less$/i,
-        use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader",
-          "less-loader",
-        ],
+        use: [MiniCssExtractPlugin.loader, "css-loader", "less-loader"],
       },
       {
         test: /.(png|svg|jpg|gif|jpeg)$/,
@@ -60,12 +56,12 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name]_[contenthash:8].css'
+      filename: "[name]_[contenthash:8].css",
     }),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src/search.html'),
-      filename: 'search.html',
-      chunks: ['search'],
+      template: path.join(__dirname, "src/search.html"),
+      filename: "search.html",
+      chunks: ["search"],
       inject: true,
       minify: {
         html5: true,
@@ -73,13 +69,13 @@ module.exports = {
         preserveLineBreaks: false,
         minifyCSS: true,
         minifyJS: true,
-        removeComments: false
-      }
+        removeComments: false,
+      },
     }),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src/index.html'),
-      filename: 'index.html',
-      chunks: ['index'],
+      template: path.join(__dirname, "src/index.html"),
+      filename: "index.html",
+      chunks: ["index"],
       inject: true,
       minify: {
         html5: true,
@@ -87,8 +83,9 @@ module.exports = {
         preserveLineBreaks: false,
         minifyCSS: true,
         minifyJS: true,
-        removeComments: false
-      }
-    })
-  ]
+        removeComments: false,
+      },
+    }),
+    new CleanWebpackPlugin(),
+  ],
 };

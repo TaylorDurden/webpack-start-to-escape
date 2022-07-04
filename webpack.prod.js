@@ -33,7 +33,14 @@ module.exports = {
           MiniCssExtractPlugin.loader,
           "css-loader",
           "less-loader",
-          "postcss-loader"
+          "postcss-loader",
+          {
+            loader: 'px2rem-loader',
+            options: {
+              remUnit: 75, // 1rem = 75px, 适用于750px的视觉稿
+              remPrecision: 8, // px转换成rem时的小数点的位数
+            }
+          }
         ],
       },
       {
@@ -51,6 +58,9 @@ module.exports = {
         test: /.(woff|woff2|eot|ttf|otf)$/,
         use: ["file-loader"],
       },
+      {
+
+      }
     ],
   },
   optimization: {

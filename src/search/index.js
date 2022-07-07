@@ -7,6 +7,7 @@ import m4 from "./images/m4.jpeg";
 
 class Search extends React.Component {
   render() {
+    debugger;
     return (
       <div className="search">
         Search Text 2222

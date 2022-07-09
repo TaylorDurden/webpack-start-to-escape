@@ -7,6 +7,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin')
 
 const setMPA = () => {
@@ -54,7 +55,7 @@ module.exports = {
     path: path.join(__dirname, "dist"),
     filename: "[name]_[chunkhash:8].js",
   },
-  mode: "none",
+  mode: "production",
   module: {
     rules: [
       {
@@ -126,6 +127,9 @@ module.exports = {
     //   ],
     // })
   ].concat(HtmlWebpackPlugins),
+  optimization: {
+    minimizer: [new UglifyJsPlugin()],
+  },
   // optimization: {
   //   splitChunks: {
   //     minSize: 0,

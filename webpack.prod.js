@@ -7,8 +7,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin')
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const HtmlWebpackExternalsPlugin = require("html-webpack-externals-plugin");
 
 const setMPA = () => {
   const entry = {};
@@ -18,15 +18,15 @@ const setMPA = () => {
   for (const index in entryFiles) {
     const entryFile = entryFiles[index];
     const match = entryFile.match(/src\/(.*)\/index\.js/);
-    console.log('match: ', match);
+    console.log("match: ", match);
     const pageName = match && match[1];
-    console.log('pageName: ', pageName);
+    console.log("pageName: ", pageName);
     entry[pageName] = entryFile;
     HtmlWebpackPlugins.push(
       new HtmlWebpackPlugin({
         template: path.join(__dirname, `src/${pageName}/index.html`),
         filename: `${[pageName]}.html`,
-        chunks: ['vendors', pageName],
+        chunks: ["vendors", pageName],
         inject: true,
         scriptLoading: "blocking",
         minify: {
@@ -59,8 +59,9 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /.js$/,
-        use: "babel-loader",
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: ["babel-loader", "eslint-loader"],
       },
       {
         test: /\.css$/,
@@ -116,17 +117,17 @@ module.exports = {
     new HtmlWebpackExternalsPlugin({
       externals: [
         {
-          module: 'react',
-          entry: 'https://now8.gtimg.com/now/lib/16.8.6/react.min.js',
-          global: 'React',
+          module: "react",
+          entry: "https://now8.gtimg.com/now/lib/16.8.6/react.min.js",
+          global: "React",
         },
         {
-          module: 'react-dom',
-          entry: 'https://now8.gtimg.com/now/lib/16.8.6/react-dom.min.js',
-          global: 'ReactDOM',
+          module: "react-dom",
+          entry: "https://now8.gtimg.com/now/lib/16.8.6/react-dom.min.js",
+          global: "ReactDOM",
         },
       ],
-    })
+    }),
   ].concat(HtmlWebpackPlugins),
   optimization: {
     minimizer: [new UglifyJsPlugin()],

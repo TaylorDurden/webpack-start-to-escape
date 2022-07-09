@@ -112,20 +112,21 @@ module.exports = {
       filename: "[name]_[contenthash:8].css",
     }),
     new CleanWebpackPlugin(),
-    // new HtmlWebpackExternalsPlugin({
-    //   externals: [
-    //     {
-    //       module: 'react',
-    //       entry: 'https://now8.gtimg.com/now/lib/16.8.6/react.min.js',
-    //       global: 'React',
-    //     },
-    //     {
-    //       module: 'react-dom',
-    //       entry: 'https://now8.gtimg.com/now/lib/16.8.6/react-dom.min.js',
-    //       global: 'ReactDOM',
-    //     },
-    //   ],
-    // })
+    new webpack.optimize.ModuleConcatenationPlugin(),
+    new HtmlWebpackExternalsPlugin({
+      externals: [
+        {
+          module: 'react',
+          entry: 'https://now8.gtimg.com/now/lib/16.8.6/react.min.js',
+          global: 'React',
+        },
+        {
+          module: 'react-dom',
+          entry: 'https://now8.gtimg.com/now/lib/16.8.6/react-dom.min.js',
+          global: 'ReactDOM',
+        },
+      ],
+    })
   ].concat(HtmlWebpackPlugins),
   optimization: {
     minimizer: [new UglifyJsPlugin()],

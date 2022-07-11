@@ -4,41 +4,43 @@ const glob = require("glob");
 const path = require("path");
 const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+// const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+// const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const HtmlWebpackExternalsPlugin = require("html-webpack-externals-plugin");
 
 const setMPA = () => {
   const entry = {};
   const HtmlWebpackPlugins = [];
-  const entryFiles = glob.sync("./src/*/index.js");
+  const entryFiles = glob.sync("./src/*/index-server.js");
 
   for (const index in entryFiles) {
     const entryFile = entryFiles[index];
-    const match = entryFile.match(/src\/(.*)\/index\.js/);
+    const match = entryFile.match(/src\/(.*)\/index-server\.js/);
     console.log("match: ", match);
     const pageName = match && match[1];
     console.log("pageName: ", pageName);
-    entry[pageName] = entryFile;
-    HtmlWebpackPlugins.push(
-      new HtmlWebpackPlugin({
-        template: path.join(__dirname, `src/${pageName}/index.html`),
-        filename: `${[pageName]}.html`,
-        chunks: ["vendors", pageName],
-        inject: true,
-        scriptLoading: "blocking",
-        minify: {
-          html5: true,
-          collapseWhitespace: true,
-          preserveLineBreaks: false,
-          minifyCSS: true,
-          minifyJS: true,
-          removeComments: false,
-        },
-      })
-    );
+    if (pageName) {
+      entry[pageName] = entryFile;
+      HtmlWebpackPlugins.push(
+        new HtmlWebpackPlugin({
+          template: path.join(__dirname, `src/${pageName}/index.html`),
+          filename: `${[pageName]}.html`,
+          chunks: ["vendors", pageName],
+          inject: true,
+          scriptLoading: "blocking",
+          minify: {
+            html5: true,
+            collapseWhitespace: true,
+            preserveLineBreaks: false,
+            minifyCSS: true,
+            minifyJS: true,
+            removeComments: false,
+          },
+        })
+      );
+    }
   }
 
   return {
@@ -53,7 +55,8 @@ module.exports = {
   entry: entry,
   output: {
     path: path.join(__dirname, "dist"),
-    filename: "[name]_[chunkhash:8].js",
+    filename: "[name]-server.js",
+    libraryTarget: "umd",
   },
   mode: "production",
   module: {
@@ -101,18 +104,18 @@ module.exports = {
       {},
     ],
   },
-  optimization: {
-    minimizer: [
-      // For webpack@5 you can use the `...` syntax to extend existing minimizers (i.e. `terser-webpack-plugin`), uncomment the next line
-      // `...`,
-      new CssMinimizerPlugin(),
-    ],
-  },
+  // optimization: {
+  //   minimizer: [
+  //     // For webpack@5 you can use the `...` syntax to extend existing minimizers (i.e. `terser-webpack-plugin`), uncomment the next line
+  //     // `...`,
+  //     new CssMinimizerPlugin(),
+  //   ],
+  // },
   plugins: [
     new MiniCssExtractPlugin({
       filename: "[name]_[contenthash:8].css",
     }),
-    new CleanWebpackPlugin(),
+    // new CleanWebpackPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new HtmlWebpackExternalsPlugin({
       externals: [

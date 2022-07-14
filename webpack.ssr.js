@@ -4,6 +4,7 @@ const glob = require("glob");
 const path = require("path");
 const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 // const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 // const { CleanWebpackPlugin } = require("clean-webpack-plugin");
@@ -56,9 +57,11 @@ module.exports = {
   output: {
     path: path.join(__dirname, "dist"),
     filename: "[name]-server.js",
+    globalObject: 'this',
     libraryTarget: "umd",
+    publicPath: "./"
   },
-  mode: "production",
+  mode: "none",
   module: {
     rules: [
       {
@@ -76,7 +79,7 @@ module.exports = {
           MiniCssExtractPlugin.loader,
           "css-loader",
           "less-loader",
-          "postcss-loader",
+          // "postcss-loader",
           {
             loader: "px2rem-loader",
             options: {
@@ -99,7 +102,12 @@ module.exports = {
       },
       {
         test: /.(woff|woff2|eot|ttf|otf)$/,
-        use: ["file-loader"],
+        use: {
+          loader: "file-loader",
+          options: {
+            publicPath: "./"
+          }
+        },
       },
       {},
     ],

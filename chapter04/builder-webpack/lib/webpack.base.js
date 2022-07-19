@@ -6,10 +6,12 @@ const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+const projectRoot = process.cwd();
+
 const setMPA = () => {
   const entry = {};
   const htmlWebpackPlugins = [];
-  const entryFiles = glob.sync(path.join(__dirname, './src/*/index.js'));
+  const entryFiles = glob.sync(path.join(projectRoot, './src/*/index.js'));
 
   Object.keys(entryFiles).map((index) => {
     const entryFile = entryFiles[index];
@@ -22,7 +24,7 @@ const setMPA = () => {
     return htmlWebpackPlugins.push(
       new HtmlWebpackPlugin({
         inlineSource: '.css$',
-        template: path.join(__dirname, `src/${pageName}/index.html`),
+        template: path.join(projectRoot, `src/${pageName}/index.html`),
         filename: `${pageName}.html`,
         chunks: ['vendors', pageName],
         inject: true,

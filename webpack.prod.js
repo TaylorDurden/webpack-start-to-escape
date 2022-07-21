@@ -9,6 +9,9 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const HtmlWebpackExternalsPlugin = require("html-webpack-externals-plugin");
+const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin');
+
+const smwp = new SpeedMeasureWebpackPlugin();
 
 const setMPA = () => {
   const entry = {};
@@ -49,7 +52,7 @@ const setMPA = () => {
 
 const { entry, HtmlWebpackPlugins } = setMPA();
 
-module.exports = {
+module.exports = smwp.wrap({
   entry: entry,
   output: {
     path: path.join(__dirname, "dist"),
@@ -70,7 +73,7 @@ module.exports = {
       {
         test: /\.less$/i,
         use: [
-          MiniCssExtractPlugin.loader,
+          // MiniCssExtractPlugin.loader,
           "css-loader",
           "less-loader",
           "postcss-loader",
@@ -109,9 +112,9 @@ module.exports = {
     ],
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: "[name]_[contenthash:8].css",
-    }),
+    // new MiniCssExtractPlugin({
+    //   filename: "[name]_[contenthash:8].css",
+    // }),
     new CleanWebpackPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new HtmlWebpackExternalsPlugin({
@@ -144,4 +147,5 @@ module.exports = {
   //     },
   //   },
   // },
-};
+  stats: 'errors-only'
+});

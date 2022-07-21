@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.prod.js",
     "dev": "webpack-dev-server --config webpack.dev.js --open",
-    "build:ssr": "webpack --config webpack.ssr.js"
+    "build:ssr": "webpack --config webpack.ssr.js",
+    "build:stats": "webpack --config webpack.prod.js --json > stats.json"
   },
   "keywords": [],
   "author": "",
@@ -48,6 +49,7 @@
     "raw-loader": "^0.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "speed-measure-webpack-plugin": "^1.5.0",
     "style-loader": "^3.3.1",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "url-loader": "^4.1.1",

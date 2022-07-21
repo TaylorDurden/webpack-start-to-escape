@@ -142,7 +142,7 @@ module.exports = {
                 },
             ],
         }),
-        new FriendlyErrorsWebpackPlugin(),
+        // new FriendlyErrorsWebpackPlugin(),
         function () {
             this.hooks.done.tap('done', (stats) => {
                 if (
@@ -168,5 +168,5 @@ module.exports = {
     //         }
     //     }
     // }
-    stats: 'errors-only',
+    // stats: 'errors-only',
 };

@@ -142,6 +142,9 @@ module.exports = smwp.wrap({
       ],
     }),
     new BundleAnalyzerPlugin(),
+    new webpack.DllReferencePlugin({
+      manifest: require('./build/library/library.json')
+    })
   ].concat(HtmlWebpackPlugins),
   optimization: {
     minimizer: [new UglifyJsPlugin(), new TerserPlugin({ parallel: 4 })],

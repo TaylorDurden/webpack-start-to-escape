@@ -11,6 +11,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const smwp = new SpeedMeasureWebpackPlugin();
 
@@ -143,7 +144,7 @@ module.exports = smwp.wrap({
     new BundleAnalyzerPlugin(),
   ].concat(HtmlWebpackPlugins),
   optimization: {
-    minimizer: [new UglifyJsPlugin()],
+    minimizer: [new UglifyJsPlugin(), new TerserPlugin({ parallel: 4 })],
   },
   // optimization: {
   //   splitChunks: {
